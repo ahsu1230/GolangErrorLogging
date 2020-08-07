@@ -1,9 +1,11 @@
 package services
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 
 	"github.com/ahsu1230/golangwebservertutorial/src/entities"
@@ -27,10 +29,26 @@ func GetPing2(c *gin.Context) {
 // Object as response body
 func GetPing3(c *gin.Context) {
 	hero := entities.Hero { "Steve", "Cap" }
-	logger.LogInfo("Hero found", logger.LogFields{
+	logger.Info("Hero found", logger.Fields{
 		"hero": hero,
 	})
 	c.JSON(http.StatusOK, &hero)
+}
+
+func GetPing4(c *gin.Context) {
+	requestUuid := c.MustGet("requestUuid").(uuid.UUID)
+
+	ctx := context.WithValue(context.Background(), "requestUuid", requestUuid)
+	if err := helper(ctx); err != nil {
+		logger.Error("Error helping", err, logger.Fields{})
+	}
+	c.Status(http.StatusOK)
+}
+
+func helper(ctx context.Context) error {
+	requestUuid := ctx.Value("requestUuid")
+	logger.Info("Inside Helper function", logger.Fields{"requestUuid": requestUuid})
+	return nil
 }
 
 //
@@ -62,29 +80,29 @@ func GetPong3(c *gin.Context) {
 	// err4 := fmt.Errorf("%w (%w)", ErrCtrl, err3)
 
 	if (errors.Is(err1, entities.ErrSQL)) {
-		logger.LogInfo("err1 matched SQL", logger.LogFields{
+		logger.Info("err1 matched SQL", logger.Fields{
 			"error": err1,
 		})
 	}
 
 	if (errors.Is(err2, entities.ErrSQL)) {
-		logger.LogInfo("err2 matched SQL", logger.LogFields{})
+		logger.Info("err2 matched SQL", logger.Fields{})
 	}
 
 	if (errors.Is(err3, entities.ErrSQL)) {
-		logger.LogInfo("err3 matched SQL", logger.LogFields{})
+		logger.Info("err3 matched SQL", logger.Fields{})
 	}
 
 	if (errors.Is(err3, entities.ErrRepo)) {
-		logger.LogInfo("err3 matched Repo", logger.LogFields{})
+		logger.Info("err3 matched Repo", logger.Fields{})
 	}
 
 	if (errors.Is(err3, entities.ErrCtrl)) {
-		logger.LogInfo("err3 matched Ctrl", logger.LogFields{})
+		logger.Info("err3 matched Ctrl", logger.Fields{})
 	}
 
 	if (errors.Is(err4, entities.ErrCtrl)) {
-		logger.LogInfo("err4 matched Ctrl", logger.LogFields{})
+		logger.Info("err4 matched Ctrl", logger.Fields{})
 	}
 
 	c.Error(err4)
