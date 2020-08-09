@@ -15,3 +15,4 @@ Experiment for logging and error handling in Go.
 - <https://github.com/VividCortex/mysqlerr/blob/master/mysqlerr.go>
 - <https://www.datadoghq.com/blog/go-logging/>
 - <https://dave.cheney.net/2015/11/05/lets-talk-about-logging>
+- <https://github.com/gin-gonic/gin/issues/274>

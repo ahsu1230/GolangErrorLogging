@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -71,41 +70,10 @@ func GetPong2(c *gin.Context) {
 // Ideal, prints out response body, and handler log
 func GetPong3(c *gin.Context) {
 	err1 := entities.ErrSQL
-	// err1 := errors.New("error inserting entry")
 	err2 := errors.Wrap(err1, "repo failure")
 	err3 := errors.Wrap(err2, "ctrl failure")
-	err4 := errors.Wrap(fmt.Errorf("%w (%w)", entities.ErrCtrl, err3), "trace")
-	// err2 := fmt.Errorf("%w (%w)", ErrSQL, err1)
-	// err3 := fmt.Errorf("%w (%w)", ErrRepo, err2)
-	// err4 := fmt.Errorf("%w (%w)", ErrCtrl, err3)
 
-	if (errors.Is(err1, entities.ErrSQL)) {
-		logger.Info("err1 matched SQL", logger.Fields{
-			"error": err1,
-		})
-	}
-
-	if (errors.Is(err2, entities.ErrSQL)) {
-		logger.Info("err2 matched SQL", logger.Fields{})
-	}
-
-	if (errors.Is(err3, entities.ErrSQL)) {
-		logger.Info("err3 matched SQL", logger.Fields{})
-	}
-
-	if (errors.Is(err3, entities.ErrRepo)) {
-		logger.Info("err3 matched Repo", logger.Fields{})
-	}
-
-	if (errors.Is(err3, entities.ErrCtrl)) {
-		logger.Info("err3 matched Ctrl", logger.Fields{})
-	}
-
-	if (errors.Is(err4, entities.ErrCtrl)) {
-		logger.Info("err4 matched Ctrl", logger.Fields{})
-	}
-
-	c.Error(err4)
-	return
-	// c.AbortWithError(http.StatusInternalServerError, err4)
+	c.Error(err3)
+	c.Abort()
+	// c.Abort(WithStatus(http.StatusBadRequest))
 }

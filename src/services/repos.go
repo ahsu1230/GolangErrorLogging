@@ -1,25 +1,26 @@
 package services
 
 import (
+	"context"
 	"github.com/pkg/errors"
 	"github.com/ahsu1230/golangwebservertutorial/src/entities"
 )
 
-func CreateHeroSuccess() (uint, error) {
-	return 42, nil
+func CreateHeroSuccess(c context.Context, rowId uint) (uint, error) {
+	return rowId, nil
 }
 
-func CreateHeroFailure() (uint, error) {
+func CreateHeroFailure(c context.Context) (uint, error) {
 	return 0, errors.New("database exception: entry already exists")
 }
 
-func GetHeroSuccess() (entities.Hero, error) {
+func GetHeroSuccess(c context.Context, name, heroName string) (entities.Hero, error) {
 	return entities.Hero{
-		"Tony",
-		"Iron Man",
+		name,
+		heroName,
 	}, nil
 }
 
-func GetHeroFailure() (entities.Hero, error) {
+func GetHeroFailure(c context.Context) (entities.Hero, error) {
 	return entities.Hero{}, errors.New("Hero not found")
 }
