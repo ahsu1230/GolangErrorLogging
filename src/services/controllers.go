@@ -36,18 +36,16 @@ func GetPing3(c *gin.Context) {
 
 func GetPing4(c *gin.Context) {
 	requestUuid := c.MustGet("requestUuid").(uuid.UUID)
-
 	ctx := context.WithValue(context.Background(), "requestUuid", requestUuid)
-	if err := helper(ctx); err != nil {
-		logger.Error("Error helping", err, logger.Fields{})
+	rowId, err := CreateHero1(ctx, 42)
+	if err != nil {
+		err = errors.Wrap(err, "Repo Failure")
+		logger.Error("Error creating hero1", err, logger.Fields{})
+		c.Error(err)
+		c.Abort()
+		return
 	}
-	c.Status(http.StatusOK)
-}
-
-func helper(ctx context.Context) error {
-	requestUuid := ctx.Value("requestUuid")
-	logger.Info("Inside Helper function", logger.Fields{"requestUuid": requestUuid})
-	return nil
+	c.JSON(http.StatusOK, gin.H{ "rowId": rowId})
 }
 
 //
@@ -70,10 +68,26 @@ func GetPong2(c *gin.Context) {
 // Ideal, prints out response body, and handler log
 func GetPong3(c *gin.Context) {
 	err1 := entities.ErrSQL
-	err2 := errors.Wrap(err1, "repo failure")
-	err3 := errors.Wrap(err2, "ctrl failure")
+	err2 := errors.Wrap(err1, "wrap1 failure")
+	err3 := errors.Wrap(err2, "wrap2 failure")
 
 	c.Error(err3)
 	c.Abort()
-	// c.Abort(WithStatus(http.StatusBadRequest))
+	// c.AbortWithError(http.StatusOK, err3)
+	// let handler decide response status code, message, etc.
+}
+
+// Uses a repo function to pass things around
+func GetPong4(c *gin.Context) {
+	requestUuid := c.MustGet("requestUuid").(uuid.UUID)
+	ctx := context.WithValue(context.Background(), "requestUuid", requestUuid)
+	rowId, err := CreateHero2(ctx, 42)
+	if err != nil {
+		err = errors.Wrap(err, "Repo Failure")
+		logger.Error("Error creating hero1", err, logger.Fields{})
+		c.Error(err)
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{ "rowId": rowId})
 }

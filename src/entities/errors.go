@@ -7,7 +7,7 @@ import (
 type AppError struct {
     Code     int    `json:"code"`
 	Message  string `json:"message"`
-	Error	 string  `json:"error"`
+	Error	 error  `json:"-"`
 }
 
 var ErrSQL = errors.New("SQL_ERROR")

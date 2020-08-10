@@ -1,4 +1,4 @@
-# GolangWebserverTutorial
+# GolangErrorLogging
 
 Experiment for logging and error handling in Go.
 

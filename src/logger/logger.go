@@ -17,7 +17,8 @@ func SetupLogger() {
 
 	// Log to STDOUT (default is STDERR)
 	// log.SetOutput(os.Stdout)
-	// Or log to File
+	
+	// OR log to File
 	// file, err := os.OpenFile("service.log", os.O_APPEND | os.O_CREATE | os.O_RDWR, 0666)
     // if err != nil {
 	// 	fmt.Printf("error opening file: %v", err)
@@ -31,7 +32,7 @@ func SetupLogger() {
 
 	standardFields = Fields{
 	// 	"hostAddress": "http://localhost:3000",
-		"appName":  "golang-webserver",
+		"appName":  "go-error-logger",
 	}
 }
 
