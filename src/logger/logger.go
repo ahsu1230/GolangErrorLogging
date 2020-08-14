@@ -45,5 +45,14 @@ func Info(message string, fields Fields) {
 func Error(message string, err error, fields Fields) {
 	log.WithFields(standardFields).
 		WithFields(fields).
-		Error(fmt.Sprintf("%s (%w)", message, err))
+
+		// Error(fmt.Sprintf("%s (%+v)", message, err))
+		// A database-related error occured (SQL_ERROR <HUGE_STACK_TRACE> Repo Failure <STACK_TRACE>)
+		// stack trace is very large (26 lines, 2 wraps), perhaps only useful in a log file?
+		
+		Error(fmt.Sprintf("%s (%v)", message, err))
+		// A database-related error occured (Repo Failure: database entry already exists: SQL_ERROR)
+		
+		// Error(fmt.Sprintf("%s (%w)", message, err))
+		// A database-related error occured (%!w(*errors.withStack=&{0xc000276660 0xc000276680}))
 }

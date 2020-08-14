@@ -49,7 +49,7 @@ func AppRequestHandler() gin.HandlerFunc {
 			"requestUuid": requestUuid,
 			"requestMethod": c.Request.Method,
 			"requestURL": c.Request.URL,
-			// "requestHost": c.Request.Host,
+			"requestHost": c.Request.Host,
 			// "requestHeader": c.Request.Header,
 			// "requestBody": c.Request.Form,
 		})
@@ -61,8 +61,8 @@ func AppRequestHandler() gin.HandlerFunc {
 		if (len(c.Errors) > 0) {
 			appError := createAppErrorFromResponseErrors(c)
 			logger.Error(appError.Message, appError.Error, logger.Fields{
-				"code": appError.Code,
 				"requestUuid": requestUuid,
+				"code": appError.Code,
 			})
 			c.AbortWithStatusJSON(appError.Code, &appError)
 			return

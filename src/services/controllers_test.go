@@ -41,6 +41,18 @@ func TestPing1(t *testing.T) {
 	assert.EqualValues(t, http.StatusOK, w.Code)
 }
 
+func TestPing3(t *testing.T) {
+	router := setupRouter()
+
+	// Record HTTP response
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest(http.MethodGet, "/ping3", nil)
+	router.ServeHTTP(w, req)
+
+	// Validate results
+	assert.EqualValues(t, http.StatusOK, w.Code)
+}
+
 func TestPong3(t *testing.T) {
 	router := setupRouter()
 

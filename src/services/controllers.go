@@ -40,7 +40,6 @@ func GetPing4(c *gin.Context) {
 	rowId, err := CreateHero1(ctx, 42)
 	if err != nil {
 		err = errors.Wrap(err, "Repo Failure")
-		logger.Error("Error creating hero1", err, logger.Fields{})
 		c.Error(err)
 		c.Abort()
 		return
@@ -84,7 +83,6 @@ func GetPong4(c *gin.Context) {
 	rowId, err := CreateHero2(ctx, 42)
 	if err != nil {
 		err = errors.Wrap(err, "Repo Failure")
-		logger.Error("Error creating hero1", err, logger.Fields{})
 		c.Error(err)
 		c.Abort()
 		return
